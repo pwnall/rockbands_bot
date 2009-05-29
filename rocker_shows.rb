@@ -16,7 +16,7 @@ class Rocker
   # Returns a boolean value indicating whether the action was successful.
   def perform_show(show)
     page = _get_page show[:page], :formNonce => _get_form_nonce
-    page.root.css('messageBoxFail').length == 0    
+    _page_indicates_success? page
   end  
 
   # Fetches the shows that the player can perform.
@@ -29,7 +29,7 @@ class Rocker
   end
   
   # Parses the shows out of a page.
-  def _parse_shows(source_page = nil)
+  def _parse_shows(source_page)
     shows_table = source_page.root.css('table.missionTable')
     shows = []
     shows_table.css('tr').each do |tr|

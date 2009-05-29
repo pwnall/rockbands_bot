@@ -76,7 +76,13 @@ class Rocker
     _get_page 'home.php', :promote => ''
   end
   
-  
+  # True if the page indicates that the previous action succeeded, false if
+  # the page indicates the action failed.
+  def _page_indicates_success?(page)
+    return true if page.root.css('.messageBoxSuccess').length > 0
+    return false if page.root.css('.messageBoxFail').length > 0
+    return nil
+  end
   
   
   # Retrieves the players' battle page.

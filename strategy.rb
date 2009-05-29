@@ -24,6 +24,19 @@ while true
     print(rocker.perform_show(show) ? "win\n" : "fail\n")
   end
   
+
+  # If we have more than $1,000 out in the open, deposit the difference in the
+  # bank. This limits exposure to attacks.
+  rocker.refresh_stats!
+  stats = rocker.stats
+  if stats[:cash] > 1000
+    deposit_cash = stats[:cash] - 1000
+    print "Current cash #{stats[:cash]} exceeding 1000\n"
+    print "Depositing #{deposit_cash} to bank..."
+    print(rocker.deposit_to_bank!(deposit_cash) ? "win\n" : "fail\n")
+  end
+  
+  
   # Wake up every ~ 2min30sec, since energy increases once every 5min.
   sleep_time = 150 + 40 * (rand - 0.5)  # +/- 20sec, so it's not regular.
   print "Sleeping #{'%.1f' % sleep_time}s..."

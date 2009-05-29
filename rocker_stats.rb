@@ -8,7 +8,14 @@ class Rocker
 
   # Refreshes the cached player statistics.
   def refresh_stats!(source_page = nil)
-    @stats = _parse_stats(source_page || _home_page)
+    @stats ||= {}
+    if source_page
+      @stats.merge! _parse_stats(source_page)
+    else
+      page = _bank_page
+      @stats.merge! _parse_stats(page)
+      @stats.merge! _parse_bank(page)
+    end
   end
   
   # Parses the player's statistics out of a page.
