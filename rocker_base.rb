@@ -57,9 +57,19 @@ class Rocker
   end
 
   # Extracts a nonce needed by the server to process state-changing requests. 
-  def _get_form_nonce
-    page = _get_page 'shows.php', :promote => '', :cat => '11'
-    match_data = /formNonce=([^&]*)&/.match page.body
+  #
+  # The nonces depend on the form that needs to be submitted. Therefore, the
+  # page_or_page_name argument should either have a Mechanize page to parse,
+  # or a string containing the relative URL of a page containing the form to be
+  # submitted. If the argument is a string, it can be followed by a hash of
+  # parameters that works similarly to _get_page.  
+  def _get_form_nonce(page_or_page_name, args = {})
+    if page_or_page_name.kind_of? String
+      page = _get_page page_or_page_name, args
+    else
+      page = page_or_page_name
+    end
+    match_data = /formNonce=([^&"]*)(\&|\")/.match page.body
     match_data[1]
   end
 

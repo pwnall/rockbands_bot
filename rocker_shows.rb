@@ -15,7 +15,8 @@ class Rocker
   #
   # Returns a boolean value indicating whether the action was successful.
   def perform_show(show)
-    page = _get_page show[:page], :formNonce => _get_form_nonce
+    nonce = _get_form_nonce 'shows.php', :promote => '', :cat => '11'
+    page = _get_page show[:page], :formNonce => nonce
     _page_indicates_success? page
   end  
 
