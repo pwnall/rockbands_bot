@@ -22,7 +22,8 @@ class Rocker
   # Parses bank information out of the bank page.
   def _parse_bank(source_page)
     root = source_page.root
-    bank_cash = root.css('.cash').inner_text.gsub(/\D/, '').to_i
+    bank_cash = root.css('.cash').inner_text.gsub(/K/, '000').
+                                             gsub(/\D/, '').to_i
     { :bank_cash => bank_cash }
   end
   
