@@ -23,15 +23,15 @@ class Rocker
     root = source_page.root
     statistics = {}
     [[:cash, '#currentCash'], [:level, '#levelFrontTopArea']].each do |rule|
-      statistics[rule[0]] = root.css(rule[1]).inner_text.gsub(',', '').to_i
+      statistics[rule[0]] = root.css(rule[1]).inner_text.gsub(/\D/, '').to_i
     end
     [[:energy, '#currentEnergy'], [:confidence, '#currentHealth'],
      [:stamina, '#currentStamina']].each do |rule|
       if root.css(rule[1]).length >= 0
-        statistics[rule[0]] = root.css(rule[1]).inner_text.gsub(',', '').to_i
+        statistics[rule[0]] = root.css(rule[1]).inner_text.gsub(/\D/, '').to_i
         statistics[:"max_#{rule[0]}"] = root.css(rule[1]).first.parent.
                                              inner_text.split('/').last.
-                                             gsub(',', '').to_i
+                                             gsub(/\D/, '').to_i
       else
         statistics[rule[0]], statistics[:"max_#{rule[0]}"] = 0, 0        
       end
