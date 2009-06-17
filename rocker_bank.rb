@@ -5,8 +5,8 @@ class Rocker
   #
   # Returns true for success, false for failure.
   def deposit_to_bank!(cash)
-    page = _get_page 'bank.php', :depositAmount => cash.to_s,
-                                 :action => 'Deposit'
+    page = _post_page 'bank.php', :depositAmount => cash.to_s,
+                                  :action => 'Deposit'
     _page_indicates_success? page
   end
   
@@ -14,8 +14,8 @@ class Rocker
   #
   # Returns true for success, false for failure.
   def withdraw_from_bank!(cash)
-    page = _get_page 'bank.php', :withdrawAmount => cash.to_s,
-                                 :action => 'Withdraw' 
+    page = _post_page 'bank.php', :withdrawAmount => cash.to_s,
+                                  :action => 'Withdraw'
     _page_indicates_success? page
   end
 

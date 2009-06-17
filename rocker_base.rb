@@ -1,5 +1,8 @@
 require 'rubygems'
-require 'nokogiri'
+begin
+  require 'nokogiri'
+rescue LoadError
+end
 require 'mechanize'
 require 'yaml'
 
@@ -44,16 +47,27 @@ class Rocker
   end  
   
   # Fetches a page from the game server.
-  def _get_page(page_name, parameters = {})
+  def _fetch_page(verb, page_name, parameters = {})
     attempts = 5
     loop do
       begin
-        return @agent.get(File.join(self.class.host, page_name), parameters)
+        return @agent.send(verb, File.join(self.class.host, page_name),
+                           parameters)
       rescue
         attempts -= 1
         raise if attempts == 0
       end
-    end
+    end    
+  end
+  
+  # Fetches a page from the game server via a GET.
+  def _get_page(page_name, parameters = {})
+    _fetch_page :get, page_name, parameters
+  end
+  
+  # Fetches a page from the game server via a POST.
+  def _post_page(page_name, parameters = {})
+    _fetch_page :post, page_name, parameters
   end
 
   # Extracts a nonce needed by the server to process state-changing requests. 
