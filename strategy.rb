@@ -90,6 +90,7 @@ def maintain_revenue_margin(desired_margin, rocker)
 end
 
 while true
+  rocker.refresh_stats!
   print_stats rocker.stats
   
   perform_best_show rocker
